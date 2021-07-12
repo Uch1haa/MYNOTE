@@ -6,51 +6,60 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/tittle"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
 
-        android:hint="content"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/content"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/content"
-        app:layout_constraintTop_toBottomOf="@+id/content" />
-
-    <EditText
-        android:id="@+id/content"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-
-        android:hint="tittle"
-        android:textSize="20dp"
-        android:textStyle="bold"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/contactList"
+        android:layout_width="410dp"
+        android:layout_height="415dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/create_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Save"
-        app:layout_constraintEnd_toEndOf="@+id/tittle"
-        app:layout_constraintStart_toStartOf="@+id/tittle"
-        app:layout_constraintTop_toBottomOf="@+id/tittle" />
+        android:layout_marginTop="28dp"
+        android:text="Save Contact"
+        app:layout_constraintEnd_toEndOf="@+id/phone_no"
+        app:layout_constraintStart_toStartOf="@+id/phone_no"
+        app:layout_constraintTop_toBottomOf="@+id/phone_no" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/Recycler"
-        android:layout_width="409dp"
-        android:layout_height="427dp"
-
-        app:layout_constraintBottom_toBottomOf="parent"
+    <EditText
+        android:id="@+id/phone_no"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="PhoneNo"
+        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/person_name" />
 
+    <EditText
+        android:id="@+id/person_name"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/contactList"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contactList" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:text="Create Contact"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/create_button"
+        app:layout_constraintStart_toStartOf="@+id/create_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

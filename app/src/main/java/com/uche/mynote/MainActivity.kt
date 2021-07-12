@@ -1,21 +1,23 @@
 package com.uche.mynote
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import com.uche.mynote.activities.ContactDetailsActivity
 import com.uche.mynote.databinding.ActivityMainBinding
-import com.uche.mynote.models.Note
-import com.uche.mynote.models.NoteAdapter
-import com.uche.mynote.models.NoteDatabase
+import com.uche.mynote.models.Contact
+import com.uche.mynote.models.ContactAdapter
+import com.uche.mynote.models.ContactDatabase
 import com.uche.mynote.viewmodels.MainActivityViewModel
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var database: NoteDatabase
-    private lateinit var notesAdapter: NoteAdapter
+    private lateinit var database: ContactDatabase
+    private lateinit var contactAdapter: ContactAdapter
     private lateinit var viewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,39 +28,45 @@ class MainActivity : AppCompatActivity() {
 //instantiating database
         database = Room.databaseBuilder(
             applicationContext,
-            NoteDatabase::class.java,
-            "notes_database"
+            ContactDatabase::class.java,
+            "contact_database"
         ).allowMainThreadQueries().build()
 
         //instantiating viewModel
         viewModel = ViewModelProvider(this)[MainActivityViewModel :: class.java]
-        viewModel.getNotes(database)
-
+        viewModel.getContacts(database)
+        
+        contactAdapter = ContactAdapter(listOf<Contact>()){
+            val intent = Intent(this@MainActivity, ContactDetailsActivity:: class.java)
+            intent.run{
+                putExtra("id", it.id)
+                putExtra("personName", it.personName)
+                putExtra("phoneNo", it.phoneNo)
+            }
+            startActivity(intent)
+        }
+        binding.contactList.apply { 
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = contactAdapter
+        }
 
         //observe live data from view model
-        viewModel.notesLiveData.observe(this,{notes ->
-            notesAdapter = NoteAdapter(database.noteDao().getAllNotes()){
-                val
-            }
-
+        viewModel.contactsLiveData.observe(this,{ contact ->
+            contactAdapter.contacts = contact
+            contactAdapter.notifyDataSetChanged()
+            
         })
 
+        binding.createButton.setOnClickListener {
+            val personName = binding.personName.text.toString()
 
-        notesAdapter = NoteAdapter(database.noteDao().getAllNotes())
-        binding.Recycler.apply{
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = notesAdapter
-        }
-        binding.button.setOnClickListener {
-            val tittle = binding.tittle.text.toString()
-            val content = binding.content.text.toString()
+            val phoneNo = binding.phoneNo.text.toString()
 
-            saveNote(tittle, content)
+            saveContact(personName, phoneNo)
         }
     }
-    private fun saveNote(tittle: String, content: String){
-        val note = Note(id = 0, tittle, content)
-        database.noteDao().addNote(note)
-        notesAdapter.notifyDataSetChanged()
+    private fun saveContact(personName: String,  phoneNo: String,){
+        val contact = Contact(id = 0, personName,  phoneNo)
+       viewModel.addContact(database, contact)
     }
 }

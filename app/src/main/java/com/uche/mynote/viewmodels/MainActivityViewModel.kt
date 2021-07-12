@@ -2,24 +2,19 @@ package com.uche.mynote.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.room.Room
-import com.uche.mynote.models.Note
-import com.uche.mynote.models.NoteDatabase
+import com.uche.mynote.models.Contact
+import com.uche.mynote.models.ContactDatabase
 
 class MainActivityViewModel : ViewModel() {
-    private lateinit var database: NoteDatabase
 
-    val notesLiveData = MutableLiveData<List<Note>>()
 
-    init {
+    val contactsLiveData = MutableLiveData<List<Contact>>()
 
+    fun getContacts(database: ContactDatabase){
+        contactsLiveData.postValue(database.contactDao().getAllContacts())
     }
-
-    fun getNotes(database: NoteDatabase){
-        notesLiveData.postValue(database.noteDao().getAllNotes())
-    }
-    fun addNote(database: NoteDatabase,note: Note){
-        database.noteDao().addNote(note)
-        getNotes(database)
+    fun addContact(database: ContactDatabase, contact: Contact){
+        database.contactDao().addContact(contact)
+        getContacts(database)
     }
 }
